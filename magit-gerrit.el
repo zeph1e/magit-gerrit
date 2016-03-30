@@ -584,10 +584,11 @@ and port is the default gerrit ssh port."
                        (when (string-match pattern host)
                          (setq matched t)))
                      matched)
-                   (eq 0 (shell-command ; or just try to connect
-                          (concat "ssh -x -p "
-                                  (number-to-string (or magit-gerrit-port port)) " "
-                                  creds " gerrit version")))))
+                   (and (> port 0)
+                        (eq 0 (shell-command ; or just try to connect
+                               (concat "ssh -x -p "
+                                       (number-to-string (or magit-gerrit-port port)) " "
+                                       creds " gerrit version"))))))
       (set (make-local-variable 'magit-gerrit-ssh-creds) creds)
       (set (make-local-variable 'magit-gerrit-port) (or magit-gerrit-port port))
       (message "Detected magit-gerrit-ssh-creds=%s, magit-gerrit-port=%d"
