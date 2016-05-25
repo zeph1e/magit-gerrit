@@ -281,6 +281,11 @@ Succeed even if branch already exist
 (defun magit-gerrit-review-at-point ()
   (get-text-property (point) 'magit-gerrit-jobj))
 
+(defsubst magit-gerrit-process-wait ()
+  (while (and magit-this-process
+	      (eq (process-status magit-this-process) 'run))
+    (sleep-for 0.005)))
+
 (defun magit-gerrit-view-patchset-diff ()
   "View the Diff for a Patchset"
   (interactive)
@@ -291,7 +296,7 @@ Succeed even if branch already exist
 	(let* ((magit-proc (magit-fetch magit-gerrit-remote ref)))
 	  (message (format "Waiting a git fetch from %s to complete..."
 			   magit-gerrit-remote))
-	  (magit-process-wait))
+	  (magit-gerrit-process-wait))
 	(message (format "Generating Gerrit Patchset for refs %s dir %s" ref dir))
 	(magit-diff "FETCH_HEAD~1..FETCH_HEAD")))))
 
@@ -308,7 +313,7 @@ Succeed even if branch already exist
 	(let* ((magit-proc (magit-fetch magit-gerrit-remote ref)))
 	  (message (format "Waiting a git fetch from %s to complete..."
 			   magit-gerrit-remote))
-	  (magit-process-wait))
+	  (magit-gerrit-process-wait))
 	(message (format "Checking out refs %s to %s in %s" ref branch dir))
 	(magit-gerrit-create-branch-force branch "FETCH_HEAD")))))
 
@@ -418,7 +423,8 @@ Succeed even if branch already exist
     ;; (message "Args: %s "
     ;;	     (concat rev ":" branch-pub))
 
-    (let* ((branch-merge (if (string= branch-remote ".")
+    (let* ((branch-merge (if (or (null branch-remote)
+				 (string= branch-remote "."))
 			     (completing-read
 			      "Remote Branch: "
 			      (let ((rbs (magit-list-remote-branch-names)))
@@ -439,7 +445,8 @@ Succeed even if branch already exist
 			 (format "refs/%s%s/%s" status (match-string 1 branch-merge) branch))))
 
 
-      (when (string= branch-remote ".")
+      (when (or (null branch-remote)
+		(string= branch-remote "."))
 	(setq branch-remote magit-gerrit-remote))
 
       (magit-run-git-async "push" "-v" branch-remote
