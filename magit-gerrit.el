@@ -524,6 +524,13 @@ Succeed even if branch already exist
 (magit-define-popup-action 'magit-dispatch-popup (string-to-char magit-gerrit-popup-prefix) "Gerrit"
   'magit-gerrit-popup)
 
+;; (transient-append-suffix 'magit-dispatch "z"
+;;  '("-1" "review" "--review"))
+
+(transient-append-suffix 'magit-dispatch "z"
+  '("p" "push commit for review" magit-gerrit-create-review))
+
+
 (magit-define-popup magit-gerrit-copy-review-popup
   "Popup console for copy review to clipboard."
   'magit-gerrit
