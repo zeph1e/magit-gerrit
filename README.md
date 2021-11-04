@@ -1,3 +1,5 @@
+**This package isn't being maintained anymore.**
+
 magit-gerrit
 ============
 
@@ -23,7 +25,13 @@ Then:
 (setq-default magit-gerrit-ssh-creds "myid@gerrithost.org")
 
 ;; if necessary, use an alternative remote instead of 'origin'
-(setq-default magit-gerrit-remote "gerrit")  
+(setq-default magit-gerrit-remote "gerrit")
+
+;; If necessary, setup alternate baseline push points depending
+;; on your local settings. See their respective documentation.
+;; Try the default configurations first.
+(setq-default magit-gerrit-push-to 'for)
+(setq-default magit-gerrit-push-format "refs/%s%s%%topic=%s")
 ```
 
 
@@ -40,7 +48,7 @@ Workflow
 Magit Gerrit Configuration
 ============
 
-For simple setups, it should be enough to set the default value for 
+For simple setups, it should be enough to set the default value for
 `magit-gerrit-ssh-creds` and `magit-gerrit-remote` as shown above.
 
 For per project configurations, consider using buffer local or directory local
@@ -52,7 +60,8 @@ variables.
 ```
 ((magit-mode .
       ((magit-gerrit-ssh-creds . "dev_a@prj1.server.com")
-       (magit-gerrit-remote . "gerrit"))))
+       (magit-gerrit-remote . "gerrit")
+       (magit-gerrit-push-to . 'for))))
 ```
 
 Author
