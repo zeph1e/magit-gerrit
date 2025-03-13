@@ -295,6 +295,7 @@ Succeed even if branch already exist
 
 (defun magit-gerrit-section (type title washer &rest args)
   (let ((magit-git-executable "ssh")
+        (magit-remote-git-executable "ssh")
         (magit-git-global-arguments nil))
     (magit-insert-section ((eval type) title)
       (magit-insert-heading title)
