@@ -120,8 +120,11 @@ Typical values would be \"publish\" or \"for\".")
   :type 'key-sequence)
 
 (defun magit-gerrit--command (cmd &rest args)
-  (let ((gcmd (concat
-	       "-x -p " (number-to-string magit-gerrit-port) " "
+  (let* ((portopt (if (and magit-gerrit-port (> magit-gerrit-port 0))
+                      (concat " -p " (number-to-string magit-gerrit-port))
+                    ""))
+         (gcmd (concat
+	       "-x " portopt " "
 	       (or magit-gerrit-ssh-creds
 		   (error "`magit-gerrit-ssh-creds' must be set!"))
 	       " "
