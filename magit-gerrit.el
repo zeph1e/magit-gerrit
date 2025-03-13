@@ -140,6 +140,7 @@ Typical values would be \"publish\" or \"for\".")
                          "--format=JSON"
                          "--current-patch-set"
                          (concat "project:" prj)
+                         "(owner:self OR reviewer:self)"
                          (concat "status:" (or status "open"))))
 
 (defun magit-gerrit--ssh-cmd (cmd &rest args)
