@@ -564,7 +564,7 @@ If PROCESS is nil, wait for `magit-this-process'."
   (or (transient-args 'magit-gerrit-popup)
       (list "")))
 
-(transient-append-suffix 'magit-dispatch "%"
+(transient-append-suffix 'magit-dispatch "Z"
   (list magit-gerrit-popup-prefix "Gerrit" 'magit-gerrit-popup))
 
 (transient-define-prefix magit-gerrit-copy-review-popup ()
